@@ -33,7 +33,9 @@ export default {
             });
         },
         myCustomer() {
-            console.log(2)
+            wx.navigateTo({
+                url: '../servers/main'
+            });
         }
     }
 
