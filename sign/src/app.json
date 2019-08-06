@@ -1,7 +1,13 @@
 {
   "pages": [
+
     "pages/AddExam/main",
     "pages/Map/main",
+
+    "pages/personal/main",
+    "pages/interview/main",
+    "pages/servers/main",
+
     "pages/index/main",
     "pages/logs/main",
     "pages/counter/main"
