@@ -42,9 +42,11 @@ page {
        padding:0 20rpx;
       }
       input{
-          display:inline-block;
+          display:block;
           line-height:100rpx;
-          padding:0 20rpx;
+          height:90rpx;
+          padding:10rpx 20rpx;
+          border:1rpx solid #ccc;
       }
       
     }
