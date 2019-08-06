@@ -1,6 +1,5 @@
 <script>
 import {login} from '@/service/';
-
 export default {
   created () {
     // 调用API从本地缓存中获取数据
@@ -14,7 +13,7 @@ export default {
 
 
     // 调用登陆接口
-    wx.login({
+    wx.login({ 
       success: async (res)=>{
         if (res.code) {
           //发起网络请求
