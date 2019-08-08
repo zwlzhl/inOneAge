@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "面试详情",
+  "usingComponents": {
+    "i-switch": "../../../static/iview/switch/index",
+    "i-modal": "../../../static/iview/modal/index"
+  }
+}

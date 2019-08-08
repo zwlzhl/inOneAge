@@ -7,7 +7,9 @@
     
     "pages/personal/main",
     "pages/interview/main",
+    
     "pages/servers/main",
+    "pages/detail/main",
 
     "pages/index/main",
     "pages/logs/main",
