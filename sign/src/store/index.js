@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import CreateLogger from 'vuex/dist/logger';
 
 // 引入store子模块
-import map from './modules/map';
+import map from './modules/map'
 import interviews from './modules/interviews'
 import interview from './modules/InterView'
 import detail from './modules/detail'
