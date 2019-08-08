@@ -1,21 +1,15 @@
 {
   "pages": [
    
-<<<<<<< HEAD
     "pages/AddExam/main",
     "pages/Map/main",
     "pages/Message/main",
     
-=======
->>>>>>> zwl
     "pages/personal/main",
     "pages/interview/main",
     
     "pages/servers/main",
     "pages/detail/main",
-
-    "pages/Map/main",
-    "pages/AddExam/main",
 
     "pages/index/main",
     "pages/logs/main",
