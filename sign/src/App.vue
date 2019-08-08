@@ -12,7 +12,7 @@ export default {
      * 支付宝(蚂蚁)：mpvue === my, mpvuePlatform === 'my'
      */
 
-
+    console.log('store...', this.$store);
     // 调用登陆接口
     wx.login({ 
       success: async (res)=>{
@@ -20,6 +20,7 @@ export default {
           //发起网络请求
           let data = await login(res.code);
           console.log('res...', data);
+           wx.setStorageSync('openid', data.data.openid);
         } else {
           console.log('登录失败！' + res.errMsg)
         }

@@ -4,15 +4,14 @@ import CreateLogger from 'vuex/dist/logger';
 
 // 引入store子模块
 import map from './modules/map';
-import interview from './modules/InterView';
-
-Vue.use(Vuex);
-
+import interview from './modules/interview'
+import detail from './modules/detail'
 
 export default new Vuex.Store({
-  modules: {
+	modules: {
     map,
-    interview
-  },
-  plugins: [CreateLogger()]
+		interview,
+		detail
+	},
+	plugins: [CreateLogger()]
 })
