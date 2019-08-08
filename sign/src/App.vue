@@ -1,4 +1,5 @@
 <script>
+
 import {login} from '@/service/';
 export default {
   created () {
@@ -29,7 +30,7 @@ export default {
 </script>
 
 <style>
-page {
+page,page>view{
   width: 100%;
   height: 100%;
 }

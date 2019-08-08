@@ -1,90 +1,94 @@
 <template>
-    <div class="MapPage">
-         <Map></Map>
-         <div class="MapPosition">
-           <div class="p"><i class="icon icon-dingwei"></i></div>
-           <div class="p"><i class="icon icon-user"></i></div>
-         </div>
-         <navigator url="/pages/AddExam/main">    
-             <p @click="toAddExam">添加面试</p>
-         </navigator>
-         
+  <div>
+    <Map
+     show-location
+    :markers="markers"
+    :longitude="longitude"
+    :latitude="latitude"
+    ></Map>
+    <div class="location" @click="location">
+       <i class="iconfont icon-dingwei"></i>
     </div>
+    <div class="locationRight" @click="toPersonal">
+       <i class="iconfont icon-wode"></i>
+       <!-- <cover-image class="mapImg" src="/static/images/timg5.jpg"></cover-image> -->
+    </div>
+
+
+    <div class="toAddExam" @click="toAddExam">添加面试</div>
+  </div>
 </template>
 
 <script>
+import '@/pages/index.vue'
+import {mapState, mapActions} from 'vuex';
 export default {
-    render(){
-        return{
-
-        }
+  data(){
+    return {
+      markers: []
     }
+  },
+  computed: {
+    ...mapState({
+      longitude: state=>state.map.longitude,
+      latitude: state=>state.map.latitude
+    })
+  },
+  methods: {
+    ...mapActions({
+      location: 'map/getLocation'
+    }),
+
+    toAddExam(){
+        wx.navigateTo({
+          url: '../AddExam/main',
+        })
+    },
+    toPersonal(){
+         wx.navigateTo({
+          url: '../personal/main',
+        })
+    }
+  }
 }
 </script>
 
 <style lang="scss">
-   page{
-        width:100%;
-        height:100%;
-        background:#ccc;
-    }
-    .MapPage{
-         width:100%;
-        height:100%;
-        position:relative;
-        Map{
-            width:100%;
-            height:100%;
-        }
-        p{
-            width:100%;
-            height:90rpx;
-            background:#000;
-            color:#fff;
-            position: absolute;
-            left:0;
-            bottom:0;
-            line-height:90rpx;
-            text-align:center;
-            font-size:40rpx;
-        }
-        .MapPosition{
-            width:100%;
-            height:90rpx;
-            // background:#f00;
-            position: absolute;
-            left:0;
-            bottom:120rpx;
-           position:relative;
-            
-            .p:nth-child(1){
-                width:100rpx;
-                height:100rpx;
-              position:fixed;
-              left:50rpx;
-              bottom:120rpx;
-            //   background:#ccc;
-              i{
-                  color:#00f;
-                  display:inline-block;
-                  font-size:60rpx;
-              }
-            }
-            .p:nth-child(2){
-                width:100rpx;
-                height:100rpx;
-              position:fixed;
-              left:600rpx;
-              bottom:120rpx;
-              i{
-                  color:#00f;
-                  background:#00f;
-                  display:inline-block;
-                  font-size:60rpx;
-              }
-            }
-            
-        }
-    }
-    
+Map{
+  width: 100%;
+  height: 90%;
+}
+.location{
+  position: fixed;
+  bottom: 150rpx;
+  left: 30rpx;
+  i{
+      font-size:60rpx;
+      color:#00f;
+  }
+}
+.locationRight{
+    position: fixed;
+  bottom: 150rpx;
+  right: 30rpx;
+    i{
+      font-size:60rpx;
+      color:#00f;
+  }
+}
+// .mapImg{
+//     width:150rpx;
+//     height:80rpx;
+//      position: fixed;
+//   bottom: 120rpx;
+//   right: 30rpx;
+// }
+.toAddExam{
+    width:100%;
+    height:90rpx;
+    background:#000;
+    color:#fff;
+    text-align:center;
+    line-height:90rpx;
+}
 </style>
