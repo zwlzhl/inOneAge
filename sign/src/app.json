@@ -1,9 +1,9 @@
 {
   "pages": [
    
-    
-    "pages/interview/main",
     "pages/personal/main",
+    "pages/interview/main",
+    
     "pages/servers/main",
     "pages/detail/main",
 
