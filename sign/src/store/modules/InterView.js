@@ -1,4 +1,4 @@
-import {addExam} from '@/service/index'
+// import {addExam} from '@/service/index'
 // 模块所有的状态
 const state = {
     list:[],

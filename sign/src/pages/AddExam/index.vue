@@ -13,13 +13,17 @@
        <li>
         <lable>面试时间</lable>
         <picker
-         
-        ><view class="date"></view>
+         mode="multiSelector"
+         :range="dateRange"
+         :value="info.date"
+         @change="dateChange"
+         @columnChange="columnChange"
+        ><view class="date">{{dateShow}}</view>
         </picker>
       </li>
        <li>
         <lable for="">面试地址</lable>
-        <input v-model="current.address" placeholder="请选择面试地址">
+        <input v-model="current.address" placeholder="请选择面试地址" @click="toMessage">
       </li>
     </ul>
     <p>备注信息</p>
@@ -30,16 +34,26 @@
 
 <script>
  import {mapState, mapMutations, mapActions} from 'vuex';
-    // const range=[
-    //     [0,1,2,3,4,5,6,7,8,9],
-    //     [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
-    //     ['00分','10分','20分','30分','40分','50分']
-    // ];
+  var moment = require('moment');
+   
+    const range=[
+        [0,1,2,3,4,5,6,7,8,9],
+        [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+        ['00分','10分','20分','30分','40分','50分']
+    ];
 export default {
     data(){
         return{
-          
+          info:{
+            date:[0,0,0]
+          }
         }
+    },
+    //如果时间过十一点 +1天
+    created(){
+      if(moment().hour()==23){
+         this.info.date=[1,0,0]
+      }
     },
     computed:{
        ...mapState({
@@ -61,20 +75,62 @@ export default {
              }
              return true
          },
-
+           // 处理面试日期
+    dateRange(){
+      let dateRange = [...range];
+      // 如果时间是今天，过滤掉现在之前的小时
+      if (!this.info.date[0]){
+        dateRange[1] = dateRange[1].filter(item=>{
+          return item>moment().hour();
+        })
+      }else{
+        dateRange[1] = range[1]
+      }
+      // 格式化小时
+      dateRange[1] = dateRange[1].map(item=>{
+        return item+'点'
+      })
+      // 计算当前日期之后的十天
+      dateRange[0] = dateRange[0].map(item=>{
+        return moment().add(item, 'days').date()+'号'
+      })
+      return dateRange;
+    },
+    // 显示的日期
+    dateShow(){
+      return moment()
+      .add(this.info.date[0], 'd')
+      .add(this.info.date[1]+1, 'h')
+      .minute(this.info.date[2]*10)
+      .format('YYYY-MM-DD HH:mm');
+    }
     },
     methods:{
        ...mapActions({
-            submitInterview: 'interview/submit'
+            submitInterview: 'InterView/submit'
         }),
        ...mapMutations({
-            updateState: 'interview/updateState'
+            updateState: 'InterView/updateState'
          }),
+         // 监听多列选择器每列变化
+    columnChange(e){
+      let {column, value} = e.target;
+      let date = [...this.info.date];
+      date[column] = value;
+      this.info.date = date;
+    },
+    //跳转到面试列表
+    toMessage(){
+      wx.navigateTo({
+        url:'../Message/main'
+      })
+    },
          //点击提交
           submit(e){
-              console.log(e)
-              //判断提交的状态
-
+              // //判断提交的状态
+              //  if (this.submiting){
+              //     return false;
+              //   },
               //这是公司名称
              if(!this.current.company){
                  wx.showToast({
@@ -99,12 +155,40 @@ export default {
                  });
                    return false
               }
+               // 添加时间戳到表单
+               this.current.start_time = moment(this.dateShow).unix()*1000;
               // 添加form_id  the formId is a mock one
               this.current.form_id=e.target.formId
-            //   this.submiting=true;
-            //   let data=await this.submitInterview(this.currrent)
-            //   console.log(data,'4444444444')
-            //   this.submiting=false;
+              this.submiting=true;
+              let data= this.submitInterview(this.currrent)
+              // console.log(data,'4444444444')
+              this.submiting=false;
+              // 处理添加结果 
+             if (data.code == 0){
+        wx.showModal({
+          title: '系统提示', //提示的标题,
+          content: data.msg, //提示的内容,
+          showCancel: false,
+          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#197DBF', //确定按钮的文字颜色,
+          success: res => {
+            if (res.confirm) {
+             this.updateState({
+                form_id: '',
+                company: '',
+                address: '',
+                phone: ''
+             })
+            //  wx.navigateTo({ url: '/pages/sign/list/main' });
+            }
+          }
+        });
+      }else{
+        wx.showToast({
+          title: data.msg, //提示的内容,
+          icon: 'fail'//图标,
+        });
+      }
          }
     },
 }
