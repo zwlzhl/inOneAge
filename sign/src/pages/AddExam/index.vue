@@ -65,10 +65,10 @@ export default {
     },
     methods:{
        ...mapActions({
-            submitInterview: 'InterView/submit'
+            submitInterview: 'interview/submit'
         }),
        ...mapMutations({
-            updateState: 'InterView/updateState'
+            updateState: 'interview/updateState'
          }),
          //点击提交
           submit(e){
@@ -101,8 +101,8 @@ export default {
               }
               // 添加form_id  the formId is a mock one
               this.current.form_id=e.target.formId
-              this.submiting=true;
-            //   let  data=await this.submitInterview(this.currrent)
+            //   this.submiting=true;
+            //   let data=await this.submitInterview(this.currrent)
             //   console.log(data,'4444444444')
             //   this.submiting=false;
          }

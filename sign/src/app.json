@@ -1,5 +1,6 @@
 {
   "pages": [
+   
     "pages/AddExam/main",
     "pages/Map/main",
     "pages/Message/main",

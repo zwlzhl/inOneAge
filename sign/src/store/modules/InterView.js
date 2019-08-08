@@ -28,6 +28,7 @@ const state = {
          payload.address=JSON.stringify(payload.address)
          let result=await addExam(payload)
          resolve(result)
+         console.log(result,'11111')
        })
     }
   }
