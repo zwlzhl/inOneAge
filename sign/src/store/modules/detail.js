@@ -6,16 +6,17 @@ const state = {
 
 const mutations = {
 	getDetailList(state, data) {
-		state.detailList = data.data
-		console.log(state, "detaillist")
+		state.detailList = data
+		console.log(state.detailList, "detaillist")
 	}
 }
 
 const actions = {
 	async getDetailData({ commit }, params) {
 		let data = await getDetail(params)
-		console.log(data, "datadetail")
-		commit("getDetailList", data)
+		data.data.address = JSON.parse(data.data.address)
+		data.data.start_time = new Date(parseInt(data.data.start_time * 1)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "")
+		commit("getDetailList", data.data)
 	}
 }
 

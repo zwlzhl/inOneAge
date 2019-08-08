@@ -14,7 +14,7 @@
             <span class="tit">{{item.company}}</span>
             <span class="NoStart">{{item.status === -1 ? '未开始' : item.status === 0 ? '已打卡' : '已放弃'}}</span>
           </li>
-          <li class="address">{{item.address}}</li>
+          <li class="address">{{item.address.address}}</li>
           <li>
             <span class="time">面试时间：{{item.start_time}}</span>
             <span class="notReminded">{{item.remind === -1 ? '未提醒' : '已提醒'}}</span>
@@ -44,19 +44,16 @@ export default {
     changTab(index) {
       this.tab = index;
       if (index !== 4) {
-        //console.log(index);
         this.getSignList({ status: index });
       } else {
         this.getSignList();
       }
-      //console.log(this.list, "signlist");
+     // console.log(this.getSignList, "sinfList")
     },
     jumpDetail(id) {
-      console.log(id)
       wx.navigateTo({
-        url: '../detail/main?id='+id,
+        url: "../detail/main?id=" + id
       });
-
     },
     ...mapActions({
       getSignList: "interview/getSignData"
