@@ -25,7 +25,7 @@ const actions = {
 }
 
 export default {
-  namespaced: "interview",
+  namespaced: "interviews",
   state,
   mutations,
   actions

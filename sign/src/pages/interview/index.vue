@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapState({
-      list: state => state.interview.a
+      list: state => state.interviews.a
     })
   },
   created() {
