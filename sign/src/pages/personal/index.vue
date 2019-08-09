@@ -31,10 +31,11 @@
         </li>
       </ul>
     </div>
-    <button
-      open-type="getPhoneNumber"
-      @getphonenumber="getPhoneNumber"
-    ></button>
+    <div class="phone" v-if="showPhone">
+      <p>为了更好的使用我们的服务，我们需要获取你的手机号码</p>
+      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">同意</button>
+    </div>
+
   </div>
 </template>
 <script>
@@ -42,7 +43,8 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      list: ""
+      list: "",
+      showPhone:true
     }
   },
   computed: {
@@ -52,10 +54,12 @@ export default {
     
   },
   created() {
+
   },
   methods: {
     ...mapActions({
-      getDecrpytData: "personal/getDecrpytData"
+      getDecrpytData: "personal/getDecrpytData",
+      upphoneData: "personal/upphoneData"
     }),
     myinterview() {
       wx.navigateTo({
@@ -68,13 +72,11 @@ export default {
       });
     },
     getPhoneNumber(e) {
-      //console.log(e, "Eee")
+      this.showPhone = false
       this.getDecrpytData({
         iv: e.target.iv,
         encryptedData: e.target.encryptedData
-      });
-      
-      console.log(this.list);
+      }); 
     }
   }
 };
@@ -133,4 +135,37 @@ button {
 .block {
   display: block;
 }
+.phone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.phone p {
+  border-top-left-radius: 20rpx;
+  border-top-right-radius: 20rpx;
+  width: 70%;
+  background: #fff;
+  padding: 20rpx 15rpx;
+  line-height: 1.5;
+  font-size: 34rpx;
+  box-sizing: border-box;
+}
+.phone button {
+  width: 71%;
+  height: 100rpx;
+  background: #197dbf;
+  color: #fff;
+  border-bottom-left-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
+  margin-top: 670rpx;
+  margin-left: 110rpx
+}
+
 </style>
