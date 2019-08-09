@@ -1,10 +1,9 @@
 {
   "pages": [
+    "pages/Map/main",
     "pages/Message/main",
     "pages/AddExam/main",
-    "pages/Map/main",
-   
-    
+
     "pages/personal/main",
     "pages/interview/main",
     

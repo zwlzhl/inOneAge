@@ -21,6 +21,7 @@ export default {
           let data = await login(res.code);
           console.log('res...', data);
            wx.setStorageSync('openid', data.data.openid);
+           wx.setStorageSync('info', data.data);
         } else {
           console.log('登录失败！' + res.errMsg)
         }
