@@ -1,7 +1,15 @@
 <script>
 
 import {login} from '@/service/';
-export default {
+// import {decrypt} from '@/service/';
+// import {mapMutations} from 'vuex';
+ export default {
+//   methods:{
+//     ...mapMutations({
+//       updataOpenid:'my/updataOpenid'
+//     })
+//   },
+
   created () {
     // 调用API从本地缓存中获取数据
     /*

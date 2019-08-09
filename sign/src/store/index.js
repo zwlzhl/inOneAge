@@ -7,6 +7,7 @@ import map from './modules/map';
 import interview from './modules/InterView';
 import message from './modules/message';
 
+
 Vue.use(Vuex);
 
 
@@ -14,7 +15,7 @@ export default new Vuex.Store({
   modules: {
     map,
     interview,
-    message
+    message,
   },
   plugins: [CreateLogger()]
 })

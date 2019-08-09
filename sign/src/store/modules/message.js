@@ -34,7 +34,7 @@ const state = {
       addressList(state,payload){
         // console.log(payload,'222222222')
         state.searchList=payload
-      }
+      },
     }
     
   

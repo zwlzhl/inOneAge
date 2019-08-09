@@ -25,6 +25,13 @@ export default {
              address: '',
         }
     },
+ watch: {
+    // 监听input框变化，调用智能提示
+    address(val, oldVal){
+      this.search(val);
+    }
+  },
+
     computed:{
         ...mapState({
            addressList:state=>state.message.searchList
@@ -39,7 +46,7 @@ export default {
         }),
          select(index){
              let Address=this.addressList[index].address
-             console.log(Address)
+            //  console.log(Address,'5555')
              this.updateState({
                 addressList:this.addressList[index]
              })
@@ -49,9 +56,10 @@ export default {
          }
     },
     mounted(){
-      this.submitMessage('八维')
+      this.submitMessage()
     },
 
+   
     created () {
     var that = this;
     // 使用函数防抖控制事件触发频率
