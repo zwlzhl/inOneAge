@@ -16,14 +16,13 @@
          mode="multiSelector"
          :range="dateRange"
          :value="info.date"
-         @change="dateChange"
          @columnChange="columnChange"
         ><view class="date">{{dateShow}}</view>
         </picker>
       </li>
        <li>
         <lable for="">面试地址</lable>
-        <input v-model="current.address" placeholder="请选择面试地址" @click="toMessage">
+        <input v-model="address" name="address" placeholder="请选择面试地址" @click="toMessage">
       </li>
     </ul>
     <p>备注信息</p>
@@ -46,9 +45,17 @@ export default {
         return{
           info:{
             date:[0,0,0]
-          }
+          },
+          address:'',
+            // start_time: 1565236800000,
         }
     },
+
+     onLoad: function(options) {
+          // 页面创建时执行
+          this.address=options.address
+          // console.log(this.address)
+        },
     //如果时间过十一点 +1天
     created(){
       if(moment().hour()==23){
@@ -59,6 +66,8 @@ export default {
        ...mapState({
            current:state=>state.interview.current
        }),
+
+        
         //判断input框的内容
         btnEnable(){
              //这是公司名称
@@ -70,7 +79,7 @@ export default {
                  return false
              }  
              //关于公司地址
-             if(!this.current.address){
+             if(!this.address){
                  return false
              }
              return true
@@ -106,6 +115,7 @@ export default {
     }
     },
     methods:{
+     
        ...mapActions({
             submitInterview: 'InterView/submit'
         }),
@@ -148,45 +158,30 @@ export default {
                   return false
              }
               //关于公司地址
-              if(!this.current.address){
+              if(!this.address){
                  wx.showToast({
                      title: '请输入公司地址',
                      icon: 'none',
                  });
-                   return false
+                   return 
               }
                // 添加时间戳到表单
                this.current.start_time = moment(this.dateShow).unix()*1000;
-              // 添加form_id  the formId is a mock one
-              this.current.form_id=e.target.formId
-              this.submiting=true;
-              let data= this.submitInterview(this.currrent)
-              // console.log(data,'4444444444')
-              this.submiting=false;
+             
               // 处理添加结果 
-             if (data.code == 0){
+             if (this.current) {
         wx.showModal({
-          title: '系统提示', //提示的标题,
-          content: data.msg, //提示的内容,
-          showCancel: false,
-          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-          confirmColor: '#197DBF', //确定按钮的文字颜色,
-          success: res => {
+          title: "温馨提示",
+          content: "添加面试成功",
+          success(res) {
+            console.log(res);
             if (res.confirm) {
-             this.updateState({
-                form_id: '',
-                company: '',
-                address: '',
-                phone: ''
-             })
-            //  wx.navigateTo({ url: '/pages/sign/list/main' });
+              wx.navigateTo({
+                 url: "../interview/main"
+              });
+            } else if (res.cancel) {
             }
           }
-        });
-      }else{
-        wx.showToast({
-          title: data.msg, //提示的内容,
-          icon: 'fail'//图标,
         });
       }
          }

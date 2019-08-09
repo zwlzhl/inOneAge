@@ -9,6 +9,7 @@ import interviews from './modules/interviews'
 import interview from './modules/InterView'
 import detail from './modules/detail'
 
+
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {

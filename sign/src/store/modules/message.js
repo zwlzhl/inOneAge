@@ -8,30 +8,38 @@
   
 // 模块所有的状态
 const state = {
-   
+  searchList:[]
   }
   
-  // 模块内的同步改变
-  const mutations = {
-    updateState(state, payload){
-      state.current = {...state.current, ...payload};
-    }
-  }
-  
+
   // 模块内的异步改变
   const actions = {
       getSuggestion({commit},payload){
         qqmapsdk.getSuggestion({
             keyword: payload,
             success:(res)=>{
-                console.log(res,'res....')
+                // console.log(res.data,'res....')
+                commit('addressList',res.data)
             }
         })
       },
   }
+
+
+    // 模块内的同步改变
+    const mutations = {
+      updateState(state, payload){
+        state.current = {...state.current, ...payload};
+      },
+      addressList(state,payload){
+        // console.log(payload,'222222222')
+        state.searchList=payload
+      },
+    }
+    
   
   export default {
-    namespaced: true,
+    namespaced: 'message',
     state,
     mutations,
     actions
