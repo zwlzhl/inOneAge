@@ -2,12 +2,12 @@ import { getSign } from '../../service/index'
 const state = {
   a: []
 }
-
+ 
 const mutations = {
   getDataList(state, data) {
     //console.log(state, "data.dataaaa")
     state.a = data
-    //console.log(state.a, "ssssssssssssss")
+    console.log(state.a, "ssssssssssssss")
   }
 }
 

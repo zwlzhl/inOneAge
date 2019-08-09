@@ -74,9 +74,10 @@ export default {
   },
   computed: {
     ...mapState({
-      detailList: state => state.detail.detailList
+      detailList: state => state.detail.detailList,
+      newInfo: state => state.detail.newInfo
     })
-  },
+  }, 
   methods: {
     onSwitch() {
       if (this.switch1 === true) {
@@ -87,10 +88,10 @@ export default {
     },
     giveUp(e) {
 			this.visible5 = true
-     
     },
     ...mapActions({
-      getDetailList: "detail/getDetailData"
+      getDetailList: "detail/getDetailData",
+      upDataInfo: "detail/upDataInfoData"
 		}),
 		handleClick5 (detail, signlist) {
         if (detail.index === 0) {
@@ -98,8 +99,19 @@ export default {
 				} 
 				else {
 					this.visible5 = false
-					console.log(signlist, this.switch1, this.id);
+          console.log(signlist, this.switch1, this.id);
+          let remind = this.switch1 === false ? 1 : -1
+          this.upDataInfo({
+            id: this.id,
+            params: {
+              status: 1,
+              remind: remind
+            }
+          })
         }
+        wx.switchTab({
+          url: '../../pages/detail/main',
+  })
     }
   }
 };

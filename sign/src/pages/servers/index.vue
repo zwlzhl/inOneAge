@@ -1,6 +1,6 @@
 <template>
     <div>
-        我的客服
+        <button open-type="contact"></button>
     </div>
 </template>
 <script>

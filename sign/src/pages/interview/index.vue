@@ -36,13 +36,23 @@ export default {
     ...mapState({
       list: state => state.interviews.a
     })
-  },
+  }, 
   created() {
     this.getSignList({ status: -1 });
   },
   methods: {
     changTab(index) {
       this.tab = index;
+      console.log(index)
+      // if(index === -1) {
+      //   this.getSignList({ status: -1 });
+      // } else if(index === 0) {
+      //   this.getSignList({ status: 0 });
+      // } else if(index === 1) {
+      //   this.getSignList({ status: 0 });
+      // } else if(index === 4) {
+      //   this.getSignList();
+      // }
       if (index !== 4) {
         this.getSignList({ status: index });
       } else {
