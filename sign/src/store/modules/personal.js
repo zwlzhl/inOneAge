@@ -1,8 +1,9 @@
-import { getDecrpyt, updatePhone } from '../../service/index'
+import { getDecrpyt, updatePhone, fingerPrint } from '../../service/index'
 
 const state = {
   getDecrpytList: {},
-  upDataphone: {}
+  upDataphone: {},
+  getfingerPrintlist: {}
 }
 
 const mutations = {
@@ -10,6 +11,10 @@ const mutations = {
     state.getDecrpytList = data
     state.upDataphone = dataphone
     console.log(dataphone, "getDecrpytList")
+  },
+
+  getfingerprint(state, data) {
+    state.getfingerPrintlist = data
   }
 
 } 
@@ -22,6 +27,12 @@ const actions = {
     let dataphone = await updatePhone({phone: parseInt( data.data.phoneNumber)})
     console.log(dataphone, "getdeacpyt")
     commit("getdecrpytlist", data.data, dataphone)
+  },
+
+  //生物认证
+  async getfingerPrint({commit}, payload) {
+    let data = await fingerPrint(payload)
+    commit("getfingerprint", data.data)
   }
 }
 

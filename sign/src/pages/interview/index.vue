@@ -8,8 +8,8 @@
         <div :class="{'selected':tab === 4,'testTitle':true}" @click="changTab(4)">全部</div>
       </div>
       <div class="content">
-        <!-- <div class="none" ><p>当前分类没有面试</p></div> -->
-        <div class="inner" v-for="(item, index) in list" :key="index" @click="jumpDetail(item.id)">
+        <!-- <div :class="list==='' ? 'none' : 'bnone'" ><p>当前分类没有面试</p></div> -->
+        <div class="inner"  v-for="(item, index) in list" :key="index" @click="jumpDetail(item.id)">
           <li>
             <span class="tit">{{item.company}}</span>
             <span class="NoStart">{{item.status === -1 ? '未开始' : item.status === 0 ? '已打卡' : '已放弃'}}</span>
@@ -40,19 +40,11 @@ export default {
   created() {
     this.getSignList({ status: -1 });
   },
+
   methods: {
     changTab(index) {
       this.tab = index;
       console.log(index)
-      // if(index === -1) {
-      //   this.getSignList({ status: -1 });
-      // } else if(index === 0) {
-      //   this.getSignList({ status: 0 });
-      // } else if(index === 1) {
-      //   this.getSignList({ status: 0 });
-      // } else if(index === 4) {
-      //   this.getSignList();
-      // }
       if (index !== 4) {
         this.getSignList({ status: index });
       } else {
@@ -111,6 +103,9 @@ export default {
   align-items: center;
   justify-content: center;
   color: #ccc;
+}
+.bnone {
+  display: none
 }
 .inner {
   width: 91%;

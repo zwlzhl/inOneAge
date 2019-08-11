@@ -35,10 +35,10 @@
       </ul>
     </div>
     <div :class="detailList.status === 1 ? 'none' : 'block'">
-      <button class="go">去打卡</button>
+      <button class="go" @click="goo">去打卡</button>
       <button class="no" @click="giveUp(detailList)">放弃面试</button>
     </div>
-    <i-modal
+    <i-modal 
       title="删除确认"
       :visible="visible5"
       :actions="actions5"
@@ -61,7 +61,7 @@ export default {
                 name: '取消'
             },
             {
-                name: '删除',
+                name: '放弃',
                 color: '#ed3f14',
                 loading: false
             }
@@ -109,9 +109,11 @@ export default {
             }
           })
         }
-        wx.switchTab({
-          url: '../../pages/detail/main',
-  })
+    },
+    goo() {
+      wx.navigateTo({
+        url: '../Map/main',
+      });
     }
   }
 };

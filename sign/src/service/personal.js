@@ -9,3 +9,8 @@ export function getDecrpyt(params) {
 export function updatePhone(params) {
 	return fly.post("/user/updatePhone", params)
 }
+
+//生物认证
+export function fingerPrint(params) {
+	return fly.post("/user/fingerPrint", params)
+}

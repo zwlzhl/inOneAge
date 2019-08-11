@@ -1,5 +1,6 @@
 <script>
 import { login } from "@/service/";
+import {mapState, mapActions} from 'vuex'
 export default {
   created() {
     // 调用API从本地缓存中获取数据
@@ -31,14 +32,18 @@ export default {
         challenge: "123456", //这个参数api解释是因子。。反正没看懂，乱填的
         authContent: "请用指纹解锁", //提示框内容
         success: res => {
-          this.location({
+          this.getfingerPrint({
             openid: wx.getStorageSync("openid"),
             json_string: res.resultJSON,
             json_signature: res.resultJSONSignature
           });
         }
       });
-
+  },
+  methods: {
+    ...mapActions({
+      getfingerPrint: "personal/getfingerPrint"
+    })
   }
 };
 </script>
