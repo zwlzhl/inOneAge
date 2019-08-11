@@ -2,7 +2,6 @@
   "pages": [
     "pages/Map/main",
     "pages/Message/main",
-    "pages/my/main",
    
     "pages/AddExam/main",
     

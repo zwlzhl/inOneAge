@@ -2,11 +2,11 @@
     <div class="wrap">
         <header>
             <span>北京</span>
-            <input type="text" placeholder="请输入搜索地址" v-model="address" focus>
+            <input type="text" placeholder="请输入搜索地址" v-model="address" @change="changeon" focus>
         </header>
         <ul>
-            <li v-for="(item,index) in addressList" :key="index" @click="select(index)" hover-class="hover">
-                <image src="/static/images/logo.png"></image>
+            <li v-for="(item,index) in addressList" :key="index"  @click="select(index)" hover-class="hover">
+                <image src="/static/images/logo.png" />
                 <div>
                     <p>{{item.title}}</p>
                     <p>{{item.address}}</p>
@@ -18,7 +18,7 @@
 <script>
 import {debounce} from '@/utils/bounch';
 import '@/pages/index.vue';
-import {mapState,mapActions,mapMutations} from 'vuex'
+import {mapState,mapActions,mapMutations} from 'vuex';
 export default {
     data(){
         return{
@@ -46,20 +46,23 @@ export default {
         }),
          select(index){
              let Address=this.addressList[index].address
-            //  console.log(Address,'5555')
+             console.log(Address)
              this.updateState({
                 addressList:this.addressList[index]
              })
                wx.navigateTo({
                    url:'../AddExam/main?address='+Address
                 })
+         },
+         changeon(){
+            //  console.log(this.address)
+            this.submitMessage(this.address)
          }
     },
-    mounted(){
-      this.submitMessage()
-    },
+    // mounted(){
+    // //   this.submitMessage('八维')
+    // },
 
-   
     created () {
     var that = this;
     // 使用函数防抖控制事件触发频率

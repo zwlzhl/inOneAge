@@ -5,22 +5,31 @@ export let login = code=>{
   return fly.post('/user/code2session', {code});
 }
 
-
 // 添加面试
-export let addExam = params=>{
+export let addSign = params => {
   return fly.post('/sign', params);
+}
+// 获取面试列表
+export let sign = (params) => {
+  return fly.get('/sign', params)
+}
+export let signCont = () => {
+  return fly.get('/sign')
+}
+//获取面试详情
+export let signDetail = params => {
+  return fly.get(`/sign/${params}`)
+}
+//更新面试
+export let updateSign = params => {
+  let { id } = params;
+  delete params.id
+  return fly.put(`/sign/${id}`, params)
 }
 
 
-// // 解码数据
-// export let decrypt = params=>{
-//   return fly.post('/user/decrypt', params);
-// }
 
 
-// // 获取面试列表接口
-// export let addExam = params=>{
-//   return fly.post('/sign', params);
-// }
+
 
 

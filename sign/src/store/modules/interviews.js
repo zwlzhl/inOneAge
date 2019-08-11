@@ -1,32 +1,97 @@
-import { getSign } from '../../service/index'
+import { addExam,getSign } from '../../service/index'
+const moment = require('moment')
+// function formatTime(start_time) {
+//   return moment(start_time * 1).format('YYYY-MM-DD HH:mm')
+// }
+
+// 模块所有的状态
 const state = {
-  a: []
+  active: 0, //表示当前面试类型，0表示全部，1表示未开始，1表示已打卡，2表示已放弃
+  list: [], //面试列表
 }
- 
+
+
+// 模块内的同步改变
 const mutations = {
-  getDataList(state, data) {
-    //console.log(state, "data.dataaaa")
-    state.a = data
-    console.log(state.a, "ssssssssssssss")
+  updateState(state, payload){
+    // 判断是否还有更多页码
+    if (payload.list){
+      if (payload.list.length === state.pageSize*state.page){
+        state.hasMore = true
+      }else{
+        state.hasMore = false
+      }
+    }
+    for (let key in payload){
+      state[key] = payload[key]
+    }
   }
 }
 
+// 模块内的异步改变
 const actions = {
-  async getSignData({ commit }, params) {
-   // console.log(params, "params")
-    let data = await getSign(params); 
-    data.data.forEach(item=> {
-      item.address = JSON.parse(item.address)
-      item.start_time = new Date(parseInt(item.start_time*1)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "")
+   // 获取面试列表
+   getList({commit, state}, payload){
+    console.log('payload...', payload);
+    return new Promise(async (resolve, reject)=>{
+      let params = {};
+      // 修正面试状态
+      if (state.active){
+        params.status = state.active-2;
+      }
+      // 拼接面试页码和每页数量
+      params.page = state.page;
+      params.pageSize = state.pageSize;
+      let result = await getSign(params);
+      result.data.forEach(item=>{
+        item.address = JSON.parse(item.address);
+        item.start_time = formatTime(item.start_time);
+      })
+      // 判断是替换还是追加
+      if (state.page === 1){
+        commit('updateState',{list: result.data})
+      }else{
+        commit('updateState',{list: [...state.list, ...result.data]})
+      }
+      // 调用resolve通知前端
+      resolve();
     })
-    //console.log('getsigndata', data);
-    commit("getDataList", data.data)
+  },
+  // 获取面试详情
+  getDetail({commit}, payload){
+    return new Promise(async (resolve, reject)=>{
+      let data = await getSignDetail(payload);
+      if (data.data.address){
+        data.data.address = JSON.parse(data.data.address);
+      }
+      data.data.start_time = formatTime(data.data.start_time);
+      commit('updateState', {info: data.data});
+      resolve();
+    })
+  },
+  // 更新面试状态
+  updateDetail({commit,dispatch}, payload){
+    return new Promise(async (resolve, reject)=>{
+      let data = await updateSignDetail(payload.id, payload.params);
+      if (data.code == 0){
+        // 重新获取详情
+        dispatch('getDetail', payload.id);
+      }
+      resolve(data);
+    })
   }
 }
+
+function formatTime(start_time){
+  return moment(start_time*1).format('YYYY-MM-DD HH:mm');
+}
+
+
 
 export default {
-  namespaced: "interviews",
+  namespaced: true,
   state,
   mutations,
   actions
 }
+

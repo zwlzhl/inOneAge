@@ -9,6 +9,7 @@ import interviews from './modules/interviews'
 import interview from './modules/InterView'
 import detail from './modules/detail'
 import personal from './modules/personal'
+import count from './modules/count'
 
 
 Vue.use(Vuex);
@@ -19,7 +20,8 @@ export default new Vuex.Store({
     message,
     detail,
     interviews,
-    personal
+    personal,
+    count
   },
   plugins: [CreateLogger()]
 })

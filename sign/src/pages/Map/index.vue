@@ -1,10 +1,10 @@
 <template>
   <div>
     <Map
-     show-location
-    :markers="markers"
-    :longitude="longitude"
-    :latitude="latitude"
+     :longitude="longitude"
+      :latitude="latitude"
+      show-location
+      :markers="markers"
     ></Map>
     <div class="location" @click="location">
        <i class="iconfont icon-dingwei"></i>
@@ -35,6 +35,7 @@ export default {
     })
   },
   methods: {
+   
     ...mapActions({
       location: 'map/getLocation'
     }),

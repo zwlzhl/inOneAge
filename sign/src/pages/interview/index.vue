@@ -1,155 +1,93 @@
 <template>
   <div class="wrap">
-    <div class="test">
-      <div class="testNav">
-        <div :class="{'selected':tab === -1,'testTitle':true}" @click="changTab(-1)">未开始</div>
-        <div :class="{'selected':tab === 0,'testTitle':true}" @click="changTab(0)">已打卡</div>
-        <div :class="{'selected':tab === 1,'testTitle':true}" @click="changTab(1)">已放弃</div>
-        <div :class="{'selected':tab === 4,'testTitle':true}" @click="changTab(4)">全部</div>
-      </div>
-      <div class="content">
-        <!-- <div class="none" ><p>当前分类没有面试</p></div> -->
-        <div class="inner" v-for="(item, index) in list" :key="index" @click="jumpDetail(item.id)">
-          <li>
-            <span class="tit">{{item.company}}</span>
-            <span class="NoStart">{{item.status === -1 ? '未开始' : item.status === 0 ? '已打卡' : '已放弃'}}</span>
-          </li>
-          <li class="address">{{item.address.address}}</li>
-          <li>
-            <span class="time">面试时间：{{item.start_time}}</span>
-            <span class="notReminded">{{item.remind === -1 ? '未提醒' : '已提醒'}}</span>
-          </li>
-        </div>
-      </div>
-    </div>
+    <header>
+      <span @click="tabChange(index)" v-for="(item, index) in types" :key="index" :class="active===index?'active':''">{{item}}</span>
+    </header>
+    <signList :list="list"></signList>
+    <p class="more" v-if="list.length">{{hasMore?'上拉加载更多': '我是有底线的'}}</p>
   </div>
 </template>
+
 <script>
-import { mapState, mapActions } from "vuex";
+import signList from '@/components/signList.vue'
+import {mapState, mapMutations, mapActions} from 'vuex'
+
 export default {
-  data() {
+  data(){
     return {
-      tab: -1
-    };
+      types: ['全部','未开始','已打卡','已放弃']
+    }
   },
   computed: {
     ...mapState({
-      list: state => state.interviews.a
+      active: state=>state.interviews.active,
+      list: state=>state.interviews.list,
+      page: state=>state.interviews.page,
+      hasMore: state=>state.interviews.hasMore
     })
-  }, 
-  created() {
-    this.getSignList({ status: -1 });
   },
   methods: {
-    changTab(index) {
-      this.tab = index;
-      console.log(index)
-      // if(index === -1) {
-      //   this.getSignList({ status: -1 });
-      // } else if(index === 0) {
-      //   this.getSignList({ status: 0 });
-      // } else if(index === 1) {
-      //   this.getSignList({ status: 0 });
-      // } else if(index === 4) {
-      //   this.getSignList();
-      // }
-      if (index !== 4) {
-        this.getSignList({ status: index });
-      } else {
-        this.getSignList();
-      }
-     // console.log(this.getSignList, "sinfList")
-    },
-    jumpDetail(id) {
-      wx.navigateTo({
-        url: "../detail/main?id=" + id
-      });
-    },
+    ...mapMutations({
+      updateState: 'interviews/updateState'
+    }),
     ...mapActions({
-      getSignList: "interviews/getSignData"
-    })
+      getList: 'interviews/getList'
+    }),
+    tabChange(index){
+      this.updateState({active: index, page: 1});
+      this.getList();
+    }
+  },
+  components: {
+    signList
+  },
+  onShow(){
+    this.getList();
+  },
+  onReachBottom(){
+    if (this.hasMore){
+      this.updateState({page: this.page+1});
+      this.getList();
+    }
   }
-};
+}
+
 </script>
-<style scoped>
-.wrap {
-  width: 100%;
+
+<style lang="scss" scoped>
+.wrap{
   height: 100%;
 }
-.test {
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 99;
   width: 100%;
-  height: 100%;
+  height: 88rpx;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid #eee;
+  span{
+    line-height: 88rpx;
+    text-align: center;
+    box-sizing: border-box;
+    border-bottom: 2rpx solid #fff;
+  }
+  span.active{
+    color: #197DBF;
+    font-weight: 500;
+    border-bottom: 3rpx solid #197DBF;
+  }
 }
-.testNav {
-  width: 100%;
-  height: 100rpx;
-  display: flex;
-  border: 1px solid #ccc;
-  border-bottom: 12rpx solid #ccc;
-}
-.testNav div {
-  flex: 1;
-  line-height: 100rpx;
+.more{
   text-align: center;
-}
-.selected {
-  color: #2e78a3;
-  border-bottom: 2px solid #217ab7;
-}
-.content {
-  flex: 1;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-}
-.none {
-  width: 100%;
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ccc;
-}
-.inner {
-  width: 91%;
-  height: 210rpx;
-  padding: 0 30rpx;
-  margin-top: 30rpx;
-}
-.inner li {
-  line-height: 70rpx;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tit {
-  font-size: 40rpx;
-}
-.NoStart {
-  background: #f4f4f4;
-  width: 100rpx;
-  height: 55rpx;
-  display: inline-block;
-  color: #aeaeb0;
-  padding: 2rpx 4rpx;
-}
-.address {
-  color: #b5b5b5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.time {
-  color: #939393;
-}
-.notReminded {
-  background: #f7f1f4;
-  width: 100rpx;
-  height: 55rpx;
-  display: inline-block;
-  color: #e39287;
-  padding: 2rpx 4rpx;
+  font-size: 32rpx;
+  line-height: 2;
+  color: #999;
+  // border-bottom: 20rpx solid #eee;
+  border-top: 20rpx solid #eee;
 }
 </style>

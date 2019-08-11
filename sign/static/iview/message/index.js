@@ -12,7 +12,7 @@ Component({
   externalClasses: ['i-class'],
 
   data: {
-    ... default_data
+    ...default_data
   },
   
   methods: {

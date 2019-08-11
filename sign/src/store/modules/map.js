@@ -1,3 +1,4 @@
+// import getAuth from '@/utils/index'
 // 模块所有的状态
 const state = {
   longitude: "113.324520",
